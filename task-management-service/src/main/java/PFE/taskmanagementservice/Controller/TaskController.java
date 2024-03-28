@@ -57,16 +57,16 @@ public class TaskController {
         Deliverable createdDeliverable = taskService.createDeliverable(deliverable, taskId);
         return ResponseEntity.ok(createdDeliverable);
     }
-        @PutMapping("/{taskId}/deliverables/{deliverableId}")
-        public ResponseEntity<Deliverable> updateDeliverable(@PathVariable Long taskId, @PathVariable Long deliverableId, @RequestBody Deliverable updatedDeliverable) throws TaggedIOException {
-            Deliverable updatedDeliverableResponse = taskService.updateDeliverable(taskId, deliverableId, updatedDeliverable);
-            return ResponseEntity.ok(updatedDeliverableResponse);
-        }
+    @PutMapping("/{taskId}/deliverables/{deliverableId}")
+    public ResponseEntity<Deliverable> updateDeliverable(@PathVariable Long taskId, @PathVariable Long deliverableId, @RequestBody Deliverable updatedDeliverable) throws TaggedIOException {
+        Deliverable updatedDeliverableResponse = taskService.updateDeliverable(taskId, deliverableId, updatedDeliverable);
+        return ResponseEntity.ok(updatedDeliverableResponse);
+    }
 
-        @DeleteMapping("/{taskId}/deliverables/{deliverableId}")
+    @DeleteMapping("/{taskId}/deliverables/{deliverableId}")
         public ResponseEntity<Void> deleteDeliverable(@PathVariable Long taskId, @PathVariable Long deliverableId) throws TaggedIOException {
-            taskService.deleteDeliverable(taskId, deliverableId);
-            return ResponseEntity.noContent().build();
-        }
+        taskService.deleteDeliverable(taskId, deliverableId);
+        return ResponseEntity.noContent().build();
+    }
     }
  
