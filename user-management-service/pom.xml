@@ -15,6 +15,7 @@
 	<description>gestion des utilisateurs</description>
 	<properties>
 		<java.version>17</java.version>
+		<spring-cloud.version>2023.0.1</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -77,8 +78,22 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
 	</dependencies>
-
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<build>
 		<plugins>
 			<plugin>
@@ -94,71 +109,71 @@
 				</configuration>
 			</plugin>
 			<plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${docker-maven-plugin.version}</version>
-            <executions>
-                <execution>
-                    <id>build</id>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>build</goal>
-                    </goals>
-                    <configuration>
-                        <images>
-                            <!-- Java service image configuration -->
-                            <image>
-                                <alias>service</alias>
-                                <name>fabric8/docker-demo:${project.version}</name>
-                                <build>
-                                    <from>java:17</from>
-                                    <assembly>
-                                        <descriptor>docker-assembly.xml</descriptor>
-                                    </assembly>
-                                    <cmd>
-                                        <shell>java -jar /maven/service.jar</shell>
-                                    </cmd>
-                                </build>
-                                <run>
-                                    <ports>
-                                        <port>tomcat.port:8080</port>
-                                    </ports>
-                                    <wait>
-                                        <http>
-                                            <url>http://localhost:${tomcat.port}/access</url>
-                                        </http>
-                                        <time>10000</time>
-                                    </wait>
-                                    <links>
-                                        <link>database:db</link>
-                                    </links>
-                                </run>
-                                <copy>
-                                    <entries>
-                                        <entry>
-                                            <containerPath>/etc/hosts</containerPath>
-                                            <hostDirectory>${project.build.directory}</hostDirectory>
-                                        </entry>
-                                    </entries>
-                                </copy>
-                            </image>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>${docker-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>build</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+						<configuration>
+							<images>
+								<!-- Java service image configuration -->
+								<image>
+									<alias>service</alias>
+									<name>fabric8/docker-demo:${project.version}</name>
+									<build>
+										<from>java:17</from>
+										<assembly>
+											<descriptor>docker-assembly.xml</descriptor>
+										</assembly>
+										<cmd>
+											<shell>java -jar /maven/service.jar</shell>
+										</cmd>
+									</build>
+									<run>
+										<ports>
+											<port>tomcat.port:8080</port>
+										</ports>
+										<wait>
+											<http>
+												<url>http://localhost:${tomcat.port}/access</url>
+											</http>
+											<time>10000</time>
+										</wait>
+										<links>
+											<link>database:db</link>
+										</links>
+									</run>
+									<copy>
+										<entries>
+											<entry>
+												<containerPath>/etc/hosts</containerPath>
+												<hostDirectory>${project.build.directory}</hostDirectory>
+											</entry>
+										</entries>
+									</copy>
+								</image>
 
-                            <!-- Database image configuration -->
-                            <image>
-                                <alias>database</alias>
-                                <name>h2database</name>
-                                <run>
-                                    <wait>
-                                        <log>database system is ready to accept connections</log>
-                                        <time>20000</time>
-                                    </wait>
-                                </run>
-                            </image>
-                        </images>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
+								<!-- Database image configuration -->
+								<image>
+									<alias>database</alias>
+									<name>h2database</name>
+									<run>
+										<wait>
+											<log>database system is ready to accept connections</log>
+											<time>20000</time>
+										</wait>
+									</run>
+								</image>
+							</images>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

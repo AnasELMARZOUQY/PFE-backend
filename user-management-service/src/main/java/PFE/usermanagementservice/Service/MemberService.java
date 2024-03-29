@@ -59,5 +59,16 @@ public class MemberService {
         user.setRole(permission.getName());
         return userRepository.save(user);
     }
+
+    public Member getMember(Long userId) {
+        try {
+            return userRepository.findById(userId)
+                    .orElseThrow(() -> new UserPrincipalNotFoundException("Member not found"));
+        } catch (UserPrincipalNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
 

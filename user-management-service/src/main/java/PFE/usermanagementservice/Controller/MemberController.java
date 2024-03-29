@@ -5,6 +5,7 @@ import java.nio.file.attribute.UserPrincipalNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,7 +32,11 @@ public class MemberController {
         Member createdMember = userService.createMember(user, permissionName);
         return ResponseEntity.ok(createdMember);
     }
-
+    @GetMapping("/{userId}")
+    public ResponseEntity<Member> getMember(@PathVariable Long userId) throws UserPrincipalNotFoundException {
+        Member member = userService.getMember(userId);
+        return ResponseEntity.ok(member);
+    }
     @PutMapping("/{userId}")
     public ResponseEntity<Member> updateMember(@PathVariable Long userId, @RequestBody Member updatedMember) throws UserPrincipalNotFoundException {
         Member updatedMemberResponse = userService.updateMember(userId, updatedMember);

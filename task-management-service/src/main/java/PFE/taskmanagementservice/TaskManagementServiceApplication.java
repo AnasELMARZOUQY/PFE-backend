@@ -3,6 +3,7 @@ package PFE.taskmanagementservice;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -12,6 +13,7 @@ import PFE.taskmanagementservice.Repository.DeliverableRepository;
 import PFE.taskmanagementservice.Repository.TaskRepository;
 
 @EnableWebMvc
+@EnableDiscoveryClient
 @SpringBootApplication
 public class TaskManagementServiceApplication {
 
